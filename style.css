@@ -29,5 +29,8 @@ dialog::backdrop { background: #000; }
 .install-dialog { width: min(calc(100% - 40px), 360px); margin: auto; padding: 28px 22px 22px; border: 0; border-radius: 18px; background: #1c1c1e; color: #fff; text-align: center; }
 .install-dialog::backdrop { background: #0008; }
 .install-dialog h2 { margin: 0 0 12px; font-size: 18px; }
-.install-dialog p { margin: 0; color: #d1d1d6; line-height: 1.55; }
+.install-instructions { color: #d1d1d6; line-height: 1.55; text-align: left; }
+.install-instructions p { margin: 0 0 10px; text-align: center; }
+.install-instructions ol { margin: 0; padding-left: 22px; }
+.install-instructions li + li { margin-top: 8px; }
 .close-install { position: absolute; top: 10px; right: 12px; border: 0; background: transparent; color: #aaa; font-size: 25px; }

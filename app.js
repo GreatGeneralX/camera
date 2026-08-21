@@ -41,9 +41,9 @@ async function installApp() {
     deferredInstallPrompt = undefined;
     return;
   }
-  installInstructions.textContent = isIOS
-    ? 'Safari下部の共有ボタンを押し、「ホーム画面に追加」を選んでください。'
-    : 'ブラウザのメニューから「ホーム画面に追加」または「アプリをインストール」を選んでください。';
+  installInstructions.innerHTML = isIOS
+    ? `<p>Safariで次の順にタップしてください。</p><ol><li>画面下部・中央の共有ボタン（□↑）</li><li>右下の「表示を増やす」</li><li>「ホーム画面に追加」</li></ol>`
+    : `<p>iPhoneのSafariでは次の順に追加できます。</p><ol><li>画面下部・中央の共有ボタン（□↑）</li><li>右下の「表示を増やす」</li><li>「ホーム画面に追加」</li></ol>`;
   installDialog.showModal();
 }
 
