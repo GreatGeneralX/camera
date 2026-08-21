@@ -1,8 +1,18 @@
 {
   "name": "無音カメラ",
   "short_name": "カメラ",
+  "id": "/camera/",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#08090c",
-  "theme_color": "#08090c"
+  "theme_color": "#08090c",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

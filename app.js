@@ -5,11 +5,39 @@ const controls = document.querySelector('.controls');
 const gallery = document.querySelector('#gallery');
 const dialog = document.querySelector('#photo-dialog');
 const photo = document.querySelector('#captured-photo');
+const installButton = document.querySelector('#install');
+const installDialog = document.querySelector('#install-dialog');
+const installInstructions = document.querySelector('#install-instructions');
 
 let stream;
 let facingMode = 'environment';
 let imageBlob;
 let imageUrl;
+let deferredInstallPrompt;
+
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+installButton.hidden = isStandalone;
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+});
+window.addEventListener('appinstalled', () => { installButton.hidden = true; });
+
+async function installApp() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    if (choice.outcome === 'accepted') installButton.hidden = true;
+    deferredInstallPrompt = undefined;
+    return;
+  }
+  installInstructions.textContent = isIOS
+    ? 'Safari下部の共有ボタンを押し、「ホーム画面に追加」を選んでください。'
+    : 'ブラウザのメニューから「ホーム画面に追加」または「アプリをインストール」を選んでください。';
+  installDialog.showModal();
+}
 
 async function startCamera() {
   stopCamera();
@@ -93,5 +121,7 @@ document.querySelector('#shutter').addEventListener('click', capture);
 gallery.addEventListener('click', () => dialog.showModal());
 document.querySelector('#retake').addEventListener('click', () => dialog.close());
 document.querySelector('#save').addEventListener('click', savePhoto);
+installButton.addEventListener('click', installApp);
+document.querySelector('#close-install').addEventListener('click', () => installDialog.close());
 window.addEventListener('pagehide', stopCamera);
 startCamera();
