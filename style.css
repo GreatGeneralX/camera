@@ -18,8 +18,9 @@ button { font: inherit; cursor: pointer; }
 .thumb, .flip-button { width: 48px; height: 48px; }
 .thumb { border: 1px solid #ffffffaa; border-radius: 7px; background: transparent center / cover no-repeat; }
 .flip-button { border: 0; background: transparent; color: #fff; font-size: 30px; line-height: 1; }
-dialog { width: min(100%, 540px); height: 100dvh; margin: 0 auto; padding: 0; border: 0; background: #08090c; color: white; }
+dialog { position: fixed; inset: 0; width: 100dvw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: #000; color: white; }
 dialog::backdrop { background: #000; }
-#captured-photo { width: 100%; height: calc(100dvh - 92px); object-fit: contain; }
-.photo-actions { display: flex; gap: 12px; justify-content: center; padding: 18px; }
-.photo-actions button:not(.save-button) { border: 1px solid #ffffff66; border-radius: 999px; padding: 12px 20px; background: transparent; color: #fff; }
+#captured-photo { display: block; width: 100dvw; height: 100dvh; object-fit: cover; }
+.photo-actions { position: absolute; right: 0; bottom: 0; left: 0; display: flex; justify-content: space-between; padding: 18px 28px max(28px, env(safe-area-inset-bottom)); }
+.photo-actions button { border: 0; padding: 12px 8px; background: transparent; color: #fff; font-weight: 600; font-size: 16px; text-shadow: 0 1px 3px #000; }
+.photo-actions .save-button { color: #ffd60a; }
