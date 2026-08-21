@@ -106,6 +106,10 @@ function capture() {
   canvas.width = Math.round(sourceWidth);
   canvas.height = Math.round(sourceHeight);
   const context = canvas.getContext('2d');
+  if (facingMode === 'user') {
+    context.translate(canvas.width, 0);
+    context.scale(-1, 1);
+  }
   context.drawImage(
     preview,
     sourceX,
@@ -130,7 +134,7 @@ function capture() {
 }
 
 function updatePreviewTransform() {
-  preview.style.transform = `scale(${zoom})`;
+  preview.style.transform = `${facingMode === 'user' ? 'scaleX(-1) ' : ''}scale(${zoom})`;
 }
 
 function setZoom(nextZoom) {
