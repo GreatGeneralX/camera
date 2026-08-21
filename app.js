@@ -17,6 +17,8 @@ let imageBlob;
 let imageUrl;
 let deferredInstallPrompt;
 let zoom = 1;
+const minimumZoom = 0.5;
+const maximumZoom = 4;
 let pinchStartDistance = 0;
 let pinchStartZoom = 1;
 let zoomIndicatorTimer;
@@ -132,7 +134,7 @@ function updatePreviewTransform() {
 }
 
 function setZoom(nextZoom) {
-  zoom = Math.min(4, Math.max(1, nextZoom));
+  zoom = Math.min(maximumZoom, Math.max(minimumZoom, nextZoom));
   updatePreviewTransform();
   zoomIndicator.value = `${zoom.toFixed(1)}×`;
   zoomIndicator.textContent = zoomIndicator.value;
