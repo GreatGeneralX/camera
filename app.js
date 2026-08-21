@@ -4,7 +4,6 @@ const permission = document.querySelector('#permission');
 const message = document.querySelector('#message');
 const topbar = document.querySelector('.topbar');
 const controls = document.querySelector('.controls');
-const cameraName = document.querySelector('#camera-name');
 const gallery = document.querySelector('#gallery');
 const dialog = document.querySelector('#photo-dialog');
 const photo = document.querySelector('#captured-photo');
@@ -23,9 +22,11 @@ async function startCamera() {
       audio: false,
     });
     preview.srcObject = stream;
+    await new Promise((resolve) => { preview.onloadedmetadata = resolve; });
+    await preview.play();
+    preview.classList.toggle('is-selfie', facingMode === 'user');
     permission.hidden = true;
     topbar.hidden = controls.hidden = false;
-    cameraName.textContent = facingMode === 'environment' ? '背面カメラ' : '前面カメラ';
   } catch (error) {
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
@@ -41,7 +42,12 @@ function capture() {
   if (!preview.videoWidth) return;
   canvas.width = preview.videoWidth;
   canvas.height = preview.videoHeight;
-  canvas.getContext('2d').drawImage(preview, 0, 0);
+  const context = canvas.getContext('2d');
+  if (facingMode === 'user') {
+    context.translate(canvas.width, 0);
+    context.scale(-1, 1);
+  }
+  context.drawImage(preview, 0, 0);
   canvas.toBlob((blob) => {
     if (!blob) return;
     imageBlob = blob;
