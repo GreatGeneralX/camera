@@ -11,11 +11,7 @@ button { font: inherit; cursor: pointer; }
 .camera-mark { display: grid; place-items: center; width: 68px; height: 52px; border: 3px solid #fff; border-radius: 12px; font-size: 42px; line-height: 0; transform: rotate(-15deg); }
 .permission-button { border: 0; border-radius: 12px; padding: 12px 20px; background: #fff; color: #000; font-weight: 600; }
 .message { min-height: 1.5em; color: #ffb4ab; font-size: .88rem; }
-.topbar, .controls { position: absolute; left: 0; right: 0; background: linear-gradient(#0008, transparent); }
-.topbar { top: 0; display: flex; align-items: center; justify-content: space-between; padding: max(14px, env(safe-area-inset-top)) 20px 18px; }
-.top-button { width: 42px; height: 42px; border: 0; border-radius: 50%; background: #333a; color: #fff; font-size: 29px; line-height: 1; }
-.top-button:disabled { color: #ddd; }
-.controls { bottom: 0; padding: 10px 24px max(24px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, #000c 38%); }
+.controls { position: absolute; right: 0; bottom: 0; left: 0; padding: 10px 24px max(24px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, #000c 38%); }
 .modes { display: flex; justify-content: center; gap: 23px; padding: 8px 0 19px; color: #f2f2f7; font-size: 13px; white-space: nowrap; }
 .modes strong { color: #ffd60a; font-weight: 500; }
 .capture-row { display: grid; grid-template-columns: 52px 1fr 52px; align-items: center; }

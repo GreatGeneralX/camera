@@ -2,7 +2,6 @@ const preview = document.querySelector('#preview');
 const canvas = document.querySelector('#canvas');
 const permission = document.querySelector('#permission');
 const message = document.querySelector('#message');
-const topbar = document.querySelector('.topbar');
 const controls = document.querySelector('.controls');
 const gallery = document.querySelector('#gallery');
 const dialog = document.querySelector('#photo-dialog');
@@ -26,7 +25,7 @@ async function startCamera() {
     await preview.play();
     preview.classList.toggle('is-selfie', facingMode === 'user');
     permission.hidden = true;
-    topbar.hidden = controls.hidden = false;
+    controls.hidden = false;
   } catch (error) {
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
@@ -91,7 +90,6 @@ async function savePhoto() {
 
 document.querySelector('#start').addEventListener('click', startCamera);
 document.querySelector('#flip').addEventListener('click', () => { facingMode = facingMode === 'environment' ? 'user' : 'environment'; startCamera(); });
-document.querySelector('#close').addEventListener('click', () => { stopCamera(); permission.hidden = false; topbar.hidden = controls.hidden = true; });
 document.querySelector('#shutter').addEventListener('click', capture);
 gallery.addEventListener('click', () => dialog.showModal());
 document.querySelector('#retake').addEventListener('click', () => dialog.close());
