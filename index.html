@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#08090c" />
     <meta name="description" content="ブラウザだけで使えるシンプルなカメラ" />
     <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
     <title>無音カメラ</title>
   </head>
@@ -13,17 +14,11 @@
     <main class="camera" aria-label="カメラ">
       <video id="preview" autoplay muted playsinline></video>
       <canvas id="canvas" hidden></canvas>
-      <section id="permission" class="overlay">
-        <div class="permission-card">
-          <div class="camera-mark" aria-hidden="true">⌁</div>
-          <p>カメラへのアクセスを許可してください</p>
-          <button id="start" class="permission-button">カメラを開く</button>
-          <p id="message" class="message" role="status"></p>
-        </div>
-      </section>
+      <p id="message" class="message" role="status" hidden></p>
+      <button id="install" class="install-button" type="button">＋ ホーム画面に追加</button>
       <footer class="controls" hidden>
         <div class="modes" aria-label="撮影モード">
-          <span>ビデオ</span><strong>写真</strong><span>ポートレート</span>
+          <strong>写真</strong>
         </div>
         <div class="capture-row">
           <button id="gallery" class="thumb" aria-label="直前の写真を表示" disabled></button>
@@ -36,8 +31,13 @@
       <img id="captured-photo" alt="撮影した写真" />
       <div class="photo-actions">
         <button id="retake">戻る</button>
-        <button id="save" class="permission-button">保存</button>
+        <button id="save" class="save-button">保存</button>
       </div>
+    </dialog>
+    <dialog id="install-dialog" class="install-dialog">
+      <button id="close-install" class="close-install" aria-label="閉じる">×</button>
+      <h2>ホーム画面に追加</h2>
+      <p id="install-instructions"></p>
     </dialog>
     <script type="module" src="app.js"></script>
   </body>
