@@ -21,11 +21,11 @@ async function startCamera() {
       audio: false,
     });
     preview.srcObject = stream;
-    await new Promise((resolve) => { preview.onloadedmetadata = resolve; });
-    await preview.play();
-    preview.classList.toggle('is-selfie', facingMode === 'user');
+    // Switch to the camera UI as soon as browser permission is granted.
     permission.hidden = true;
     controls.hidden = false;
+    preview.classList.toggle('is-selfie', facingMode === 'user');
+    await preview.play();
   } catch (error) {
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
