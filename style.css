@@ -5,12 +5,8 @@ button { font: inherit; cursor: pointer; }
 .camera { position: relative; min-height: 100dvh; overflow: hidden; background: #000; }
 #preview { width: 100%; height: 100dvh; object-fit: cover; background: #111; }
 #preview.is-selfie { transform: scaleX(-1); }
-.overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: #000; text-align: center; }
-.permission-card { display: grid; justify-items: center; gap: 16px; max-width: 300px; }
-.permission-card > p { margin: 0; color: #f2f2f7; font-size: 17px; line-height: 1.4; }
-.camera-mark { display: grid; place-items: center; width: 68px; height: 52px; border: 3px solid #fff; border-radius: 12px; font-size: 42px; line-height: 0; transform: rotate(-15deg); }
-.permission-button { border: 0; border-radius: 12px; padding: 12px 20px; background: #fff; color: #000; font-weight: 600; }
-.message { min-height: 1.5em; color: #ffb4ab; font-size: .88rem; }
+.message { position: absolute; top: max(16px, env(safe-area-inset-top)); right: 20px; left: 20px; z-index: 2; margin: 0; padding: 10px 12px; border-radius: 10px; background: #000b; color: #ffb4ab; font-size: .88rem; text-align: center; }
+.save-button { border: 0; border-radius: 12px; padding: 12px 20px; background: #fff; color: #000; font-weight: 600; }
 .controls { position: absolute; right: 0; bottom: 0; left: 0; padding: 10px 24px max(24px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, #000c 38%); }
 .modes { display: flex; justify-content: center; gap: 23px; padding: 8px 0 19px; color: #f2f2f7; font-size: 13px; white-space: nowrap; }
 .modes strong { color: #ffd60a; font-weight: 500; }
@@ -26,4 +22,4 @@ dialog { width: min(100%, 540px); height: 100dvh; margin: 0 auto; padding: 0; bo
 dialog::backdrop { background: #000; }
 #captured-photo { width: 100%; height: calc(100dvh - 92px); object-fit: contain; }
 .photo-actions { display: flex; gap: 12px; justify-content: center; padding: 18px; }
-.photo-actions button:not(.permission-button) { border: 1px solid #ffffff66; border-radius: 999px; padding: 12px 20px; background: transparent; color: #fff; }
+.photo-actions button:not(.save-button) { border: 1px solid #ffffff66; border-radius: 999px; padding: 12px 20px; background: transparent; color: #fff; }

@@ -13,14 +13,7 @@
     <main class="camera" aria-label="カメラ">
       <video id="preview" autoplay muted playsinline></video>
       <canvas id="canvas" hidden></canvas>
-      <section id="permission" class="overlay">
-        <div class="permission-card">
-          <div class="camera-mark" aria-hidden="true">⌁</div>
-          <p>カメラへのアクセスを許可してください</p>
-          <button id="start" class="permission-button">カメラを開く</button>
-          <p id="message" class="message" role="status"></p>
-        </div>
-      </section>
+      <p id="message" class="message" role="status" hidden></p>
       <footer class="controls" hidden>
         <div class="modes" aria-label="撮影モード">
           <span>ビデオ</span><strong>写真</strong><span>ポートレート</span>
@@ -36,7 +29,7 @@
       <img id="captured-photo" alt="撮影した写真" />
       <div class="photo-actions">
         <button id="retake">戻る</button>
-        <button id="save" class="permission-button">保存</button>
+        <button id="save" class="save-button">保存</button>
       </div>
     </dialog>
     <script type="module" src="app.js"></script>

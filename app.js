@@ -1,6 +1,5 @@
 const preview = document.querySelector('#preview');
 const canvas = document.querySelector('#canvas');
-const permission = document.querySelector('#permission');
 const message = document.querySelector('#message');
 const controls = document.querySelector('.controls');
 const gallery = document.querySelector('#gallery');
@@ -15,9 +14,7 @@ let imageUrl;
 async function startCamera() {
   stopCamera();
   message.textContent = '';
-  // Do not leave the permission screen covering the preview while the browser
-  // completes its camera request.
-  permission.hidden = true;
+  message.hidden = true;
   controls.hidden = false;
   try {
     stream = await navigator.mediaDevices.getUserMedia({
@@ -29,7 +26,7 @@ async function startCamera() {
     await preview.play();
   } catch (error) {
     controls.hidden = true;
-    permission.hidden = false;
+    message.hidden = false;
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
   }
@@ -91,10 +88,10 @@ async function savePhoto() {
   }
 }
 
-document.querySelector('#start').addEventListener('click', startCamera);
 document.querySelector('#flip').addEventListener('click', () => { facingMode = facingMode === 'environment' ? 'user' : 'environment'; startCamera(); });
 document.querySelector('#shutter').addEventListener('click', capture);
 gallery.addEventListener('click', () => dialog.showModal());
 document.querySelector('#retake').addEventListener('click', () => dialog.close());
 document.querySelector('#save').addEventListener('click', savePhoto);
 window.addEventListener('pagehide', stopCamera);
+startCamera();
