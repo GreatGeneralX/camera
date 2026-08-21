@@ -7,7 +7,7 @@ button { font: inherit; cursor: pointer; }
 #preview.is-selfie { transform: scaleX(-1); }
 .message { position: absolute; top: max(16px, env(safe-area-inset-top)); right: 20px; left: 20px; z-index: 2; margin: 0; padding: 10px 12px; border-radius: 10px; background: #000b; color: #ffb4ab; font-size: .88rem; text-align: center; }
 .save-button { border: 0; border-radius: 12px; padding: 12px 20px; background: #fff; color: #000; font-weight: 600; }
-.controls { position: absolute; right: 0; bottom: 0; left: 0; padding: 10px 24px max(24px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, #000c 38%); }
+.controls { position: absolute; right: 0; bottom: 0; left: 0; padding: 10px 24px max(24px, env(safe-area-inset-bottom)); }
 .modes { display: flex; justify-content: center; gap: 23px; padding: 8px 0 19px; color: #f2f2f7; font-size: 13px; white-space: nowrap; }
 .modes strong { color: #ffd60a; font-weight: 500; }
 .capture-row { display: grid; grid-template-columns: 52px 1fr 52px; align-items: center; }
@@ -16,8 +16,8 @@ button { font: inherit; cursor: pointer; }
 .shutter span { width: 64px; height: 64px; border-radius: 50%; background: #fff; transition: transform .12s; }
 .shutter:active span { transform: scale(.86); }
 .thumb, .flip-button { width: 48px; height: 48px; }
-.thumb { border: 1px solid #ffffff88; border-radius: 7px; background: #ffffff22 center / cover no-repeat; }
-.flip-button { border: 0; border-radius: 50%; background: #444b; color: #fff; font-size: 30px; line-height: 1; }
+.thumb { border: 1px solid #ffffffaa; border-radius: 7px; background: transparent center / cover no-repeat; }
+.flip-button { border: 0; background: transparent; color: #fff; font-size: 30px; line-height: 1; }
 dialog { width: min(100%, 540px); height: 100dvh; margin: 0 auto; padding: 0; border: 0; background: #08090c; color: white; }
 dialog::backdrop { background: #000; }
 #captured-photo { width: 100%; height: calc(100dvh - 92px); object-fit: contain; }
