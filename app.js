@@ -46,9 +46,26 @@ async function startCamera() {
   controls.hidden = false;
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: facingMode } },
+      video: {
+        facingMode: { ideal: facingMode },
+        width: { ideal: 4096 },
+        height: { ideal: 4096 },
+        frameRate: { ideal: 30 },
+      },
       audio: false,
     });
+    const track = stream.getVideoTracks()[0];
+    const capabilities = track?.getCapabilities?.();
+    if (capabilities?.width?.max && capabilities?.height?.max) {
+      try {
+        await track.applyConstraints({
+          width: { ideal: capabilities.width.max },
+          height: { ideal: capabilities.height.max },
+        });
+      } catch (error) {
+        console.warn('Unable to use the camera maximum resolution.', error);
+      }
+    }
     preview.srcObject = stream;
     preview.classList.toggle('is-selfie', facingMode === 'user');
     await preview.play();
@@ -103,7 +120,7 @@ function capture() {
     gallery.style.backgroundImage = `url(${imageUrl})`;
     gallery.disabled = false;
     dialog.showModal();
-  }, 'image/jpeg', .95);
+  }, 'image/jpeg', .99);
 }
 
 async function savePhoto() {
