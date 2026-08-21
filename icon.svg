@@ -1,6 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#111214"/>
-  <rect x="84" y="164" width="344" height="236" rx="48" fill="none" stroke="#fff" stroke-width="32"/>
-  <path d="M178 164l30-54h96l30 54" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="32"/>
-  <circle cx="256" cy="282" r="74" fill="none" stroke="#fff" stroke-width="32"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="background" x1="120" y1="80" x2="900" y2="980" gradientUnits="userSpaceOnUse"><stop stop-color="#303a68"/><stop offset=".48" stop-color="#161a35"/><stop offset="1" stop-color="#090a14"/></linearGradient>
+    <linearGradient id="body" x1="220" y1="260" x2="800" y2="770" gradientUnits="userSpaceOnUse"><stop stop-color="#fafbff"/><stop offset="1" stop-color="#aeb8e8"/></linearGradient>
+    <radialGradient id="lens" cx=".34" cy=".25" r=".78"><stop stop-color="#bfe7ff"/><stop offset=".26" stop-color="#5484d8"/><stop offset=".65" stop-color="#182655"/><stop offset="1" stop-color="#080b20"/></radialGradient>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="28" stdDeviation="25" flood-color="#000" flood-opacity=".42"/></filter>
+  </defs>
+  <rect width="1024" height="1024" rx="226" fill="url(#background)"/>
+  <path d="M288 344h112l44-82h136l44 82h112c44 0 80 36 80 80v308c0 44-36 80-80 80H288c-44 0-80-36-80-80V424c0-44 36-80 80-80Z" fill="url(#body)" filter="url(#shadow)"/>
+  <rect x="291" y="407" width="442" height="322" rx="64" fill="#111630" opacity=".22"/>
+  <circle cx="512" cy="578" r="166" fill="#0a0e23"/>
+  <circle cx="512" cy="578" r="142" fill="url(#lens)"/>
+  <circle cx="465" cy="525" r="44" fill="#fff" opacity=".26"/>
+  <circle cx="512" cy="578" r="92" fill="none" stroke="#d9edff" stroke-opacity=".42" stroke-width="12"/>
+  <circle cx="710" cy="430" r="24" fill="#ffca55"/>
 </svg>
