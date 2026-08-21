@@ -15,18 +15,21 @@ let imageUrl;
 async function startCamera() {
   stopCamera();
   message.textContent = '';
+  // Do not leave the permission screen covering the preview while the browser
+  // completes its camera request.
+  permission.hidden = true;
+  controls.hidden = false;
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: facingMode }, width: { ideal: 4032 }, height: { ideal: 3024 } },
+      video: { facingMode: { ideal: facingMode } },
       audio: false,
     });
     preview.srcObject = stream;
-    // Switch to the camera UI as soon as browser permission is granted.
-    permission.hidden = true;
-    controls.hidden = false;
     preview.classList.toggle('is-selfie', facingMode === 'user');
     await preview.play();
   } catch (error) {
+    controls.hidden = true;
+    permission.hidden = false;
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
   }
