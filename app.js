@@ -1,5 +1,6 @@
 const preview = document.querySelector('#preview');
 const canvas = document.querySelector('#canvas');
+const camera = document.querySelector('.camera');
 const message = document.querySelector('#message');
 const controls = document.querySelector('.controls');
 const gallery = document.querySelector('#gallery');
@@ -8,12 +9,17 @@ const photo = document.querySelector('#captured-photo');
 const installButton = document.querySelector('#install');
 const installDialog = document.querySelector('#install-dialog');
 const installInstructions = document.querySelector('#install-instructions');
+const zoomIndicator = document.querySelector('#zoom-indicator');
 
 let stream;
 let facingMode = 'environment';
 let imageBlob;
 let imageUrl;
 let deferredInstallPrompt;
+let zoom = 1;
+let pinchStartDistance = 0;
+let pinchStartZoom = 1;
+let zoomIndicatorTimer;
 
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -46,11 +52,28 @@ async function startCamera() {
   controls.hidden = false;
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: facingMode } },
+      video: {
+        facingMode: { ideal: facingMode },
+        width: { ideal: 4096 },
+        height: { ideal: 4096 },
+        frameRate: { ideal: 30 },
+      },
       audio: false,
     });
+    const track = stream.getVideoTracks()[0];
+    const capabilities = track?.getCapabilities?.();
+    if (capabilities?.width?.max && capabilities?.height?.max) {
+      try {
+        await track.applyConstraints({
+          width: { ideal: capabilities.width.max },
+          height: { ideal: capabilities.height.max },
+        });
+      } catch (error) {
+        console.warn('Unable to use the camera maximum resolution.', error);
+      }
+    }
     preview.srcObject = stream;
-    preview.classList.toggle('is-selfie', facingMode === 'user');
+    updatePreviewTransform();
     await preview.play();
   } catch (error) {
     controls.hidden = true;
@@ -72,8 +95,10 @@ function capture() {
     preview.clientWidth / preview.videoWidth,
     preview.clientHeight / preview.videoHeight,
   );
-  const sourceWidth = preview.clientWidth / scale;
-  const sourceHeight = preview.clientHeight / scale;
+  const previewSourceWidth = preview.clientWidth / scale;
+  const previewSourceHeight = preview.clientHeight / scale;
+  const sourceWidth = previewSourceWidth / zoom;
+  const sourceHeight = previewSourceHeight / zoom;
   const sourceX = (preview.videoWidth - sourceWidth) / 2;
   const sourceY = (preview.videoHeight - sourceHeight) / 2;
   canvas.width = Math.round(sourceWidth);
@@ -103,7 +128,25 @@ function capture() {
     gallery.style.backgroundImage = `url(${imageUrl})`;
     gallery.disabled = false;
     dialog.showModal();
-  }, 'image/jpeg', .95);
+  }, 'image/jpeg', .99);
+}
+
+function updatePreviewTransform() {
+  preview.style.transform = `${facingMode === 'user' ? 'scaleX(-1) ' : ''}scale(${zoom})`;
+}
+
+function setZoom(nextZoom) {
+  zoom = Math.min(4, Math.max(1, nextZoom));
+  updatePreviewTransform();
+  zoomIndicator.value = `${zoom.toFixed(1)}×`;
+  zoomIndicator.textContent = zoomIndicator.value;
+  zoomIndicator.classList.add('is-visible');
+  clearTimeout(zoomIndicatorTimer);
+  zoomIndicatorTimer = setTimeout(() => zoomIndicator.classList.remove('is-visible'), 700);
+}
+
+function touchDistance(touches) {
+  return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
 }
 
 async function savePhoto() {
@@ -123,5 +166,22 @@ document.querySelector('#retake').addEventListener('click', () => dialog.close()
 document.querySelector('#save').addEventListener('click', savePhoto);
 installButton.addEventListener('click', installApp);
 document.querySelector('#close-install').addEventListener('click', () => installDialog.close());
+camera.addEventListener('touchstart', (event) => {
+  if (event.touches.length !== 2) return;
+  event.preventDefault();
+  pinchStartDistance = touchDistance(event.touches);
+  pinchStartZoom = zoom;
+}, { passive: false });
+camera.addEventListener('touchmove', (event) => {
+  if (event.touches.length !== 2 || !pinchStartDistance) return;
+  event.preventDefault();
+  setZoom(pinchStartZoom * (touchDistance(event.touches) / pinchStartDistance));
+}, { passive: false });
+camera.addEventListener('touchend', () => { pinchStartDistance = 0; });
+camera.addEventListener('wheel', (event) => {
+  if (!event.ctrlKey) return;
+  event.preventDefault();
+  setZoom(zoom - event.deltaY * 0.01);
+}, { passive: false });
 window.addEventListener('pagehide', stopCamera);
 startCamera();
