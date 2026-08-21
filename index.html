@@ -14,30 +14,33 @@
       <video id="preview" autoplay muted playsinline></video>
       <canvas id="canvas" hidden></canvas>
       <section id="permission" class="overlay">
-        <div class="intro">
-          <p class="eyebrow">PRIVATE CAMERA</p>
-          <h1>無音カメラ</h1>
-          <p>音を出さずに、ブラウザ上で撮影します。</p>
-          <button id="start" class="primary">カメラを開く</button>
+        <div class="permission-card">
+          <div class="camera-mark" aria-hidden="true">⌁</div>
+          <p>カメラへのアクセスを許可してください</p>
+          <button id="start" class="permission-button">カメラを開く</button>
           <p id="message" class="message" role="status"></p>
         </div>
       </section>
       <header class="topbar" hidden>
-        <button id="flip" class="icon-button" aria-label="前後のカメラを切り替える">↻</button>
-        <span id="camera-name">背面カメラ</span>
-        <button id="close" class="icon-button" aria-label="カメラを閉じる">×</button>
+        <button id="close" class="top-button" aria-label="カメラを閉じる">⌄</button>
+        <button class="top-button" aria-label="設定" disabled>⋯</button>
       </header>
       <footer class="controls" hidden>
-        <button id="gallery" class="thumb" aria-label="直前の写真を表示" disabled></button>
-        <button id="shutter" class="shutter" aria-label="撮影する"><span></span></button>
-        <span class="spacer" aria-hidden="true"></span>
+        <div class="modes" aria-label="撮影モード">
+          <span>ビデオ</span><strong>写真</strong><span>ポートレート</span>
+        </div>
+        <div class="capture-row">
+          <button id="gallery" class="thumb" aria-label="直前の写真を表示" disabled></button>
+          <button id="shutter" class="shutter" aria-label="撮影する"><span></span></button>
+          <button id="flip" class="flip-button" aria-label="前後のカメラを切り替える">↻</button>
+        </div>
       </footer>
     </main>
     <dialog id="photo-dialog">
       <img id="captured-photo" alt="撮影した写真" />
       <div class="photo-actions">
         <button id="retake">戻る</button>
-        <button id="save" class="primary">保存</button>
+        <button id="save" class="permission-button">保存</button>
       </div>
     </dialog>
     <script src="app.js"></script>
