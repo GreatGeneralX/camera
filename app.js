@@ -2,7 +2,6 @@ const preview = document.querySelector('#preview');
 const canvas = document.querySelector('#canvas');
 const permission = document.querySelector('#permission');
 const message = document.querySelector('#message');
-const topbar = document.querySelector('.topbar');
 const controls = document.querySelector('.controls');
 const gallery = document.querySelector('#gallery');
 const dialog = document.querySelector('#photo-dialog');
@@ -22,11 +21,11 @@ async function startCamera() {
       audio: false,
     });
     preview.srcObject = stream;
-    await new Promise((resolve) => { preview.onloadedmetadata = resolve; });
-    await preview.play();
-    preview.classList.toggle('is-selfie', facingMode === 'user');
+    // Switch to the camera UI as soon as browser permission is granted.
     permission.hidden = true;
-    topbar.hidden = controls.hidden = false;
+    controls.hidden = false;
+    preview.classList.toggle('is-selfie', facingMode === 'user');
+    await preview.play();
   } catch (error) {
     message.textContent = 'カメラを利用できません。ブラウザの権限を確認してください。';
     console.error(error);
@@ -40,14 +39,33 @@ function stopCamera() {
 
 function capture() {
   if (!preview.videoWidth) return;
-  canvas.width = preview.videoWidth;
-  canvas.height = preview.videoHeight;
+  // Match the saved frame to the visible `object-fit: cover` preview.
+  const scale = Math.max(
+    preview.clientWidth / preview.videoWidth,
+    preview.clientHeight / preview.videoHeight,
+  );
+  const sourceWidth = preview.clientWidth / scale;
+  const sourceHeight = preview.clientHeight / scale;
+  const sourceX = (preview.videoWidth - sourceWidth) / 2;
+  const sourceY = (preview.videoHeight - sourceHeight) / 2;
+  canvas.width = Math.round(sourceWidth);
+  canvas.height = Math.round(sourceHeight);
   const context = canvas.getContext('2d');
   if (facingMode === 'user') {
     context.translate(canvas.width, 0);
     context.scale(-1, 1);
   }
-  context.drawImage(preview, 0, 0);
+  context.drawImage(
+    preview,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  );
   canvas.toBlob((blob) => {
     if (!blob) return;
     imageBlob = blob;
@@ -72,7 +90,6 @@ async function savePhoto() {
 
 document.querySelector('#start').addEventListener('click', startCamera);
 document.querySelector('#flip').addEventListener('click', () => { facingMode = facingMode === 'environment' ? 'user' : 'environment'; startCamera(); });
-document.querySelector('#close').addEventListener('click', () => { stopCamera(); permission.hidden = false; topbar.hidden = controls.hidden = true; });
 document.querySelector('#shutter').addEventListener('click', capture);
 gallery.addEventListener('click', () => dialog.showModal());
 document.querySelector('#retake').addEventListener('click', () => dialog.close());
