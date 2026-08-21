@@ -40,14 +40,33 @@ function stopCamera() {
 
 function capture() {
   if (!preview.videoWidth) return;
-  canvas.width = preview.videoWidth;
-  canvas.height = preview.videoHeight;
+  // Match the saved frame to the visible `object-fit: cover` preview.
+  const scale = Math.max(
+    preview.clientWidth / preview.videoWidth,
+    preview.clientHeight / preview.videoHeight,
+  );
+  const sourceWidth = preview.clientWidth / scale;
+  const sourceHeight = preview.clientHeight / scale;
+  const sourceX = (preview.videoWidth - sourceWidth) / 2;
+  const sourceY = (preview.videoHeight - sourceHeight) / 2;
+  canvas.width = Math.round(sourceWidth);
+  canvas.height = Math.round(sourceHeight);
   const context = canvas.getContext('2d');
   if (facingMode === 'user') {
     context.translate(canvas.width, 0);
     context.scale(-1, 1);
   }
-  context.drawImage(preview, 0, 0);
+  context.drawImage(
+    preview,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  );
   canvas.toBlob((blob) => {
     if (!blob) return;
     imageBlob = blob;
