@@ -17,7 +17,7 @@ let imageBlob;
 let imageUrl;
 let deferredInstallPrompt;
 let zoom = 1;
-const minimumZoom = 0.5;
+const minimumZoom = 1;
 const maximumZoom = 4;
 let pinchStartDistance = 0;
 let pinchStartZoom = 1;
